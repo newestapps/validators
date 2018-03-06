@@ -22,11 +22,11 @@ class TaxDocumentRule implements Rule
     public function passes($attribute, $value)
     {
 
-        switch (strtoupper($value['type'])) {
+        switch (strtoupper($value['tax_document_type'])) {
             case TaxDocument::CPF:
-                return (new CPFRule())->passes('type', $value['number']);
+                return (new CPFRule())->passes('type', $value['tax_document_number']);
             case TaxDocument::CNPJ:
-                return (new CNPJRule())->passes('type', $value['number']);
+                return (new CNPJRule())->passes('type', $value['tax_document_number']);
         }
 
         return false;
