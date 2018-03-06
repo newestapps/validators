@@ -4,7 +4,7 @@
  *   with PhpStorm
  */
 
-namespace Newestapps\Package\Providers;
+namespace Newestapps\Validators\Providers;
 
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Facades\Route;
