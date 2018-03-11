@@ -16,11 +16,18 @@ class PhoneRule implements Rule
     /**
      * @var int
      */
-    private $mustBeOfType;
+    protected $mustBeOfType;
 
     public function __construct($mustBeOfType = PhoneNumberType::MOBILE)
     {
         $this->mustBeOfType = $mustBeOfType;
+    }
+
+    private function isDDDValid($ddd)
+    {
+        $validOnes = require __DIR__.'./assert/valid_ddd_list.php';
+
+        return in_array($ddd, $validOnes);
     }
 
     /**
@@ -33,6 +40,10 @@ class PhoneRule implements Rule
     public function passes($attribute, $value)
     {
         if (!isset($value['phone_country_code']) || !isset($value['phone_area_code']) || !isset($value['phone_number'])) {
+            return false;
+        }
+
+        if (!$this->isDDDValid($value['phone_area_code'])) {
             return false;
         }
 
