@@ -7,9 +7,10 @@
 namespace Newestapps\Validators\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
-use Newestapps\Validators\Enum\TaxDocument;
+use libphonenumber\PhoneNumberType;
+use libphonenumber\PhoneNumberUtil;
 
-class TaxDocumentRule implements Rule
+class DDDPhoneRule implements Rule
 {
 
     /**
@@ -21,14 +22,13 @@ class TaxDocumentRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        switch (strtoupper($value['tax_document_type'])) {
-            case TaxDocument::CPF:
-                return (new CPFRule())->passes('type', $value['tax_document_number']);
-            case TaxDocument::CNPJ:
-                return (new CNPJRule())->passes('type', $value['tax_document_number']);
+        if (!isset($value) || !is_numeric($value) || empty(trim($value))) {
+            return false;
         }
 
-        return false;
+        $validOnes = require __DIR__.'/assert/valid_ddd_list.php';
+
+        return in_array($value, $validOnes);
     }
 
     /**
@@ -38,6 +38,6 @@ class TaxDocumentRule implements Rule
      */
     public function message()
     {
-        return 'Documento inválido.';
+        return 'Código de area (DDD) do telefone não é válido.';
     }
 }

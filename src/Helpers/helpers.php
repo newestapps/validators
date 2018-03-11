@@ -3,6 +3,8 @@
 if (!function_exists('nw_validateCPF')) {
     function nw_validateCPF($cpf)
     {
+        $cpf = str_onlyASCII($cpf);
+
         // Extrai somente os números
         $cpf = preg_replace('/[^0-9]/is', '', $cpf);
 
@@ -32,7 +34,7 @@ if (!function_exists('nw_validateCPF')) {
 if (!function_exists('nw_validateCNPJ')) {
     function nw_validateCNPJ($cnpj)
     {
-        return true;
+        $cnpj = str_onlyASCII($cnpj);
 
         $cnpj = trim($cnpj);
         if (empty($cnpj)) {
@@ -131,6 +133,10 @@ if (!function_exists('nw_lastName')) {
 if (!function_exists('nw_mask')) {
     function nw_mask($val, $mask)
     {
+        if (empty($val)) {
+            return '';
+        }
+
         $maskared = '';
         $k = 0;
         for ($i = 0; $i <= strlen($mask) - 1; $i++) {

@@ -39,15 +39,20 @@ class PhoneRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        if (!isset($value['phone_country_code']) || !isset($value['phone_area_code']) || !isset($value['phone_number'])) {
+        if (!isset($value['country_code']) || !isset($value['area_code']) || !isset($value['number'])) {
             return false;
         }
 
-        if (!$this->isDDDValid($value['phone_area_code'])) {
+        $value['country_code'] = str_onlyASCII($value['country_code']);
+        $value['area_code'] = str_onlyASCII($value['area_code']);
+        $value['number'] = str_onlyASCII($value['number']);
+
+        $validDDD = new DDDPhoneRule();
+        if (!$validDDD->passes('type', $value['area_code'])) {
             return false;
         }
 
-        $fullNumber = "+{$value['phone_country_code']}{$value['phone_area_code']}{$value['phone_number']}";
+        $fullNumber = "+{$value['country_code']}{$value['area_code']}{$value['number']}";
         $phoneNumberUtil = PhoneNumberUtil::getInstance();
 
         $phoneNumber = $phoneNumberUtil->parse($fullNumber);
