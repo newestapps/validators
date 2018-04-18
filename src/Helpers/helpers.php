@@ -4,6 +4,9 @@ if (!function_exists('nw_validateCPF')) {
     function nw_validateCPF($cpf)
     {
         $cpf = str_onlyASCII($cpf);
+        if (strlen($cpf) != 11) {
+            return false;
+        }
 
         // Extrai somente os números
         $cpf = preg_replace('/[^0-9]/is', '', $cpf);
@@ -35,6 +38,9 @@ if (!function_exists('nw_validateCNPJ')) {
     function nw_validateCNPJ($cnpj)
     {
         $cnpj = str_onlyASCII($cnpj);
+        if (strlen($cnpj) != 14) {
+            return false;
+        }
 
         $cnpj = trim($cnpj);
         if (empty($cnpj)) {
